@@ -65,36 +65,70 @@ namespace UserAuthentication.Controllers
             ViewBag.CurrentFilter = searchString;
             return View(users);
         }
-        
-        [CustomeAuthorize(Roles = "Teacher")]
+
+        //lít course
         public ActionResult ListCourse(string id, string searchString, string sortOrder, string currentFilter)
         {
 
 
-            ViewBag.FullNameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
 
-            var courses = from s in context.Users
+            var courses = from s in context.Course
                         select s;
             switch (sortOrder)
             {
                 case "name_desc":
-                    courses = courses.OrderByDescending(s => s.FullName);
+                    courses = courses.OrderByDescending(s => s.Name);
                     break;
 
 
                 default:
-                    courses = courses.OrderBy(s => s.FullName);
+                    courses = courses.OrderBy(s => s.Name);
                     break;
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                courses = courses.Where(s => s.FullName.Contains(searchString));
+              courses = courses.Where(s => s.Name.Contains(searchString));
             }
 
 
             ViewBag.CurrentFilter = searchString;
             return View(courses);
         }
+
+        //coursecategory
+        public ActionResult CourseCategory(string id, string searchString, string sortOrder, string currentFilter)
+        {
+
+
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+
+            var coursecategorys = from s in context.CourseCategories
+                          select s;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    coursecategorys = coursecategorys.OrderByDescending(s => s.Name);
+                    break;
+
+
+                default:
+                    coursecategorys = coursecategorys.OrderBy(s => s.Name);
+                    break;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                coursecategorys = coursecategorys.Where(s => s.Name.Contains(searchString));
+            }
+
+
+            ViewBag.CurrentFilter = searchString;
+            return View(coursecategorys);
+        }
+
+
+
     }
 }
